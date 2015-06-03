@@ -1,0 +1,12 @@
+DEBUT
+
+Saisir le point de départ (demander le numéro, on mettra un référentiel dans le rapport)
+
+//On a le point de départ, donc on a notre graphe.
+//Penser à attribuer un taux de phéromones à chaque point de ce graphe (0 au début)
+
+//Calculer la visibilité (je regarde comment on fait…)
+
+//Au premier tour, pas de phéromones au sol, donc la première fourmi choisi sa
+//première direction au hasard
+
