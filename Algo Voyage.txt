@@ -3,13 +3,14 @@ DEBUT
 Saisir le point de départ (demander le numéro, on mettra un référentiel dans le rapport)
 
 //On a le point de départ, donc on a notre graphe.
-//Penser à attribuer un taux de phéromones à chaque arrête de ce graphe (0 au début)
+//Penser à attribuer un taux de phéromones à chaque arrête de ce graphe (1 au début)
 
 
-//Visibilité = 2 (noeud actuel et le noeud suivant)
 
-calcul du poids d’une arrête:
-[taux de phéromones * (1/distance d’une arrête aux choix)] / [FORMULE INCOMPLETE]
+//Visibilité =  ’inverse de la distance de deux villes i et j (1/dij)
+
+calcul du poids d’une arrête: en gros faut faire le ratio!
+[taux de phéromones * (1/distance de l’arrête à parcourir)] / [FORMULE INCOMPLETE]
 
 
 poids phéromone = calculée à la fin du parcoure d’une fourmi
