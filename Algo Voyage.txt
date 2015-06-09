@@ -7,14 +7,13 @@ Saisir le point de départ (demander le numéro, on mettra un référentiel dans
 
 
 
-//Visibilité =  ’inverse de la distance de deux villes i et j (1/dij)
-
+//Influence de la visibilité =  2
 calcul du poids d’une arrête: en gros faut faire le ratio!
-[taux de phéromones * (1/distance de l’arrête à parcourir)] / [FORMULE INCOMPLETE]
+[taux de phéromones * ((1/distance de l’arrête à parcourir)*2)] / [FORMULE INCOMPLETE]
 
 
-poids phéromone = calculée à la fin du parcoure d’une fourmi
-poids total d’une arrête = poids distance + poids phéromone / 2
+quantité de phéromones déposées sur un arrête = 1 / longueur du trajet 
+
 
 //Au premier tour, pas de phéromones au sol, donc la première fourmi choisi sa
 //première arrête au hasard (mais en tenant compte du facteur distance)
