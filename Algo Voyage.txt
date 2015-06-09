@@ -3,10 +3,18 @@ DEBUT
 Saisir le point de départ (demander le numéro, on mettra un référentiel dans le rapport)
 
 //On a le point de départ, donc on a notre graphe.
-//Penser à attribuer un taux de phéromones à chaque point de ce graphe (0 au début)
+//Penser à attribuer un taux de phéromones à chaque arrête de ce graphe (0 au début)
 
-//Calculer la visibilité (je regarde comment on fait…)
+
+//Visibilité = 2 (noeud actuel et le noeud suivant)
+
+calcul du poids d’une arrête:
+[taux de phéromones * (1/distance d’une arrête aux choix)] / [FORMULE INCOMPLETE]
+
+
+poids phéromone = calculée à la fin du parcoure d’une fourmi
+poids total d’une arrête = poids distance + poids phéromone / 2
 
 //Au premier tour, pas de phéromones au sol, donc la première fourmi choisi sa
-//première direction au hasard
+//première arrête au hasard (mais en tenant compte du facteur distance)
 
