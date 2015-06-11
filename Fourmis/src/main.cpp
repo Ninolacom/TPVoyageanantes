@@ -11,7 +11,7 @@ const int infPhero = 1;
 //taux d'avopration des phéromones
 const float tEvap = 0.5;
 
-  int distances [] [size] = {
+  double distances [] [size] = {
     {0, 97, 165, 260, 259, 303, 1330, 1450, 1370, 1270, 1970, 2340, 2640, 2120, 1750, 1960, 1840, 1600, 1470, 1470, 1260, 1270, 1100, 980, 642, 476, 540, 481, 439},
     {97, 0, 81, 262, 199, 246, 1230, 1480, 1400, 1300, 2010, 2360, 2670, 2130, 1780, 1970, 1860, 1570, 1450, 1450, 1250, 1260, 1100, 941, 612, 408, 456, 406, 409},
     {165, 81, 0, 204, 126, 165, 1180, 1430, 1360, 1290, 1970, 2340, 2630, 2090, 1750, 194, 1820, 1550, 1390, 1390, 1190, 1190, 1030, 845, 535, 318, 378, 330, 449},
@@ -52,7 +52,7 @@ int main() {
     }
     
     //tableau contenant les phéromones
-    int pheromones[size] [size];
+    double pheromones[size] [size];
     //Initualisation du tableau avec des 1;
     for(int i=0;i<size;i++){
         for(int j=0;j<size; j++){
@@ -62,18 +62,16 @@ int main() {
     int incr = 0;
     //while(incr < 100){
         //somme des arrête pondérée 
-        float somme=0;
+        double somme=0;
         for(int i=0; i<size; i++){
-            cout << "Stash" << endl;
             if(i!=depart)
-                somme+=(pow(pheromones[size] [i], infPhero)*pow(1/distances[size][i], infVisi)); 
+                somme+=(pow(pheromones[depart] [i], infPhero)*pow(1/distances[depart][i], infVisi));
         }
         //tableau contenant les resultats de la régle aléatoire de transition proportionelle
-        int regle[size];
+        double regle[size];
         for(int i=0; i<size; i++){
             if(i!=depart){
-                regle[i] = (pow(pheromones[size] [i], infPhero)*pow(1/distances[size][i], infVisi))/somme;
-                cout << regle[i] << endl;
+                regle[i] = (pow(pheromones[depart] [i], infPhero)*pow(1/distances[depart][i], infVisi))/somme;
             }
         }
         incr++;
