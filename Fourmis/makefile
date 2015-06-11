@@ -1,10 +1,12 @@
 CC=g++
-FLAGS= -std=C++0x -Wall
+FLAGS= -std=c++0x
+NAME=fourmis
 
-all : fourmis
+all : $(NAME)
 
-fourmis : main.o
-	$(CC) main.o -o fourmis.exe $(FLAGS)
+fourmis : main.cpp
+	$(CC) main.cpp -o $(NAME) $(FLAGS)
 
-main.o : main.cpp
-	$(CC) main.cpp -o main.o $(FLAGS)
+clean : 
+	rm -rf *.o
+	rm -f $(NAME)
