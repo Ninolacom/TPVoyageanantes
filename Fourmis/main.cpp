@@ -53,37 +53,29 @@ double distances [] [size] = {
 };
 
 int RWS(double* regle, vector<int> remainingCities){
-    cout << "Enter RWS" << endl;
     
     bool citiesVisited = true;
     int j;
 
-    //cout << citiesVisited << endl;
     double random = mt_rand()%1000;
-    cout << "Random " << random << endl;
     j = 0;
     while(random > 0){
-        cout << "RWS 1" << endl;
         random-=regle[remainingCities.at(j)]*1000;
-        cout << "RWS 2" << endl;
         if(random > 0){
             j++;
         }
     }
-    cout << "RWS 3" << endl;
-        remainingCities.at(j);
-    cout << "RWS 4" << endl;
 
     return remainingCities.at(j);
 }
 
 int main() {
     cout << "hello" << endl;
-    int depart=2;
-    /*while(depart>28 || depart<0){
+    int depart=100;
+    while(depart>28 || depart<0){
         cout << "Point de depart (0-28)" << endl;
         cin >> depart;
-    }*/
+    }
     
     //tableau contenant les phéromones
     double pheromones[size] [size];
@@ -104,7 +96,7 @@ int main() {
     int currentCity = depart;
     //liste des villes restantes (car sinon roue biaisé tourne en boucle avec juste le tableau des true/false)
     vector<int> remainingCities = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28};
-    while(incr < 100){
+    while(incr < 10000){
                 
         bool allCitiesVisited = false;
 
@@ -131,7 +123,6 @@ int main() {
             if(remainingCities.size()==0){
                 allCitiesVisited = true;
             }
-            cout << "allCitiesVisited " << allCitiesVisited << endl;
             //si toutes les villes ne sont pas visitées, la fourmis continue
             if(!allCitiesVisited){
                 //somme des arrête pondérée 
