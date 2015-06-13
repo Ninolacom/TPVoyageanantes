@@ -179,10 +179,41 @@ int main() {
 
         ///////////////////////
         incr++;
-        cout << "Itération n°" << incr << endl;
+        //cout << "Itération n°" << incr << endl;
     }
-    
-    
+
+    /*for(int i=0; i<size; i++){
+        for(int j=0; j<size; j++){
+            cout << pheromones[i] [j] << " - ";
+        }
+        cout << endl;
+    }*/
+
+    //reinitialisation du tableau
+    for(int i=0; i<size; i++){
+        visitedCities[i] = false;
+    }
+    //extration des phéromones
+    int path[size];
+    path[0] = depart;
+    visitedCities[depart] = true;
+
+    int currentNode = depart;
+    //on parcour les phéromones et on va là où les phéromones sont les plus fortes
+    for(int i=0; i<size; i++){
+        double maxPheromone = 0;
+        for(int j=0; j<size; j++){
+            if(pheromones[currentNode][j]>maxPheromone && !visitedCities[j]){
+                path[i+1] = j;
+                visitedCities[j] = true;
+            }
+        }
+        currentNode = path[i+1];
+    }
+
+    for(int i=0; i<size; i++){
+        cout << path[i] << " -> ";
+    }
 
     return 0;
 }
