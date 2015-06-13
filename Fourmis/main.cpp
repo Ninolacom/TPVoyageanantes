@@ -1,7 +1,16 @@
-#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <vector>
 #include <math.h>
+#include <iostream>
+#include <random>
+#include <chrono>
 
 using namespace std;
+
+//initialisation du mersenne twister
+unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+mt19937 mt_rand(seed);
 
 const int size = 29;
 //influence de la visibilité
@@ -11,7 +20,7 @@ const int infPhero = 1;
 //taux d'avopration des phéromones
 const float tEvap = 0.5;
 
-  double distances [] [size] = {
+double distances [] [size] = {
     {0, 97, 165, 260, 259, 303, 1330, 1450, 1370, 1270, 1970, 2340, 2640, 2120, 1750, 1960, 1840, 1600, 1470, 1470, 1260, 1270, 1100, 980, 642, 476, 540, 481, 439},
     {97, 0, 81, 262, 199, 246, 1230, 1480, 1400, 1300, 2010, 2360, 2670, 2130, 1780, 1970, 1860, 1570, 1450, 1450, 1250, 1260, 1100, 941, 612, 408, 456, 406, 409},
     {165, 81, 0, 204, 126, 165, 1180, 1430, 1360, 1290, 1970, 2340, 2630, 2090, 1750, 194, 1820, 1550, 1390, 1390, 1190, 1190, 1030, 845, 535, 318, 378, 330, 449},
@@ -41,15 +50,40 @@ const float tEvap = 0.5;
     {540, 456, 378, 423, 310, 310, 1150, 1490, 1410, 1390, 1990, 2320, 2640, 2060, 1780, 1930, 1790, 1520, 1270, 1270, 1070, 1100, 931, 613, 434, 58, 0, 175, 658},
     {481, 406, 330, 449, 332, 332, 1320, 1630, 1560, 1520, 2140, 2480, 2810, 2230, 1930, 2080, 1960, 1700, 1440, 1440, 1260, 1270, 1100, 799, 596, 178, 175, 0, 492},
     {439, 409, 449, 640, 566, 566, 1640, 1890, 1800, 1700, 2420, 2760, 3070, 2550, 2180, 2380, 2260, 2020, 1840, 1840, 1640, 1650, 1490, 1250, 985, 635, 658, 492, 0}
-  };
+};
+
+int RWS(double* regle, vector<int> remainingCities){
+    cout << "Enter RWS" << endl;
+    
+    bool citiesVisited = true;
+    int j;
+
+    //cout << citiesVisited << endl;
+    double random = mt_rand()%1000;
+    cout << "Random " << random << endl;
+    j = 0;
+    while(random > 0){
+        cout << "RWS 1" << endl;
+        random-=regle[remainingCities.at(j)]*1000;
+        cout << "RWS 2" << endl;
+        if(random > 0){
+            j++;
+        }
+    }
+    cout << "RWS 3" << endl;
+        remainingCities.at(j);
+    cout << "RWS 4" << endl;
+
+    return remainingCities.at(j);
+}
 
 int main() {
     cout << "hello" << endl;
-    int depart=100;
-    while(depart>28 || depart<0){
+    int depart=2;
+    /*while(depart>28 || depart<0){
         cout << "Point de depart (0-28)" << endl;
         cin >> depart;
-    }
+    }*/
     
     //tableau contenant les phéromones
     double pheromones[size] [size];
@@ -59,23 +93,103 @@ int main() {
             pheromones [i] [j] = 1;
         }
     }
+    //tableau des villes visitées 
+    bool visitedCities[size];
+    //initialisation du talbeau sur false
+    for(int i=0; i<size; i++){
+        visitedCities[i] = false;
+    }
+
     int incr = 0;
-    //while(incr < 100){
-        //somme des arrête pondérée 
-        double somme=0;
-        for(int i=0; i<size; i++){
-            if(i!=depart)
-                somme+=(pow(pheromones[depart] [i], infPhero)*pow(1/distances[depart][i], infVisi));
-        }
-        //tableau contenant les resultats de la régle aléatoire de transition proportionelle
-        double regle[size];
-        for(int i=0; i<size; i++){
-            if(i!=depart){
-                regle[i] = (pow(pheromones[depart] [i], infPhero)*pow(1/distances[depart][i], infVisi))/somme;
+    int currentCity = depart;
+    //liste des villes restantes (car sinon roue biaisé tourne en boucle avec juste le tableau des true/false)
+    vector<int> remainingCities = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28};
+    while(incr < 100){
+                
+        bool allCitiesVisited = false;
+
+        //initialisation des pheromones déposée par la fourmis actuelle
+        double pheromonesFourmis [size] [size];
+        for(int i=0;i<size;i++){
+            for(int j=0;j<size; j++){
+                pheromonesFourmis [i] [j] = 0;
             }
         }
+
+        //tant que toutes les villes ne sont pas visitées on continue avec la fourmis
+        while(!allCitiesVisited){
+            
+            //on mar que la ville comme visité
+            visitedCities[currentCity] = true;
+            for(int i=0; i<remainingCities.size(); i++){
+                if(remainingCities.at(i)==currentCity){
+                    remainingCities.erase(remainingCities.begin()+i);
+                }
+            }
+
+            //si la somme est égale à 0 alors toutes les villes on étée visitée
+            if(remainingCities.size()==0){
+                allCitiesVisited = true;
+            }
+            cout << "allCitiesVisited " << allCitiesVisited << endl;
+            //si toutes les villes ne sont pas visitées, la fourmis continue
+            if(!allCitiesVisited){
+                //somme des arrête pondérée 
+                double somme=0;
+                for(int i=0; i<size; i++){
+                    if(!visitedCities[i]){
+                        somme+=(pow(pheromones[currentCity] [i], infPhero)*pow(1/distances[currentCity][i], infVisi));
+                    }
+                }
+                //tableau contenant les resultats de la régle aléatoire de transition proportionelle
+                double regle[size];
+                //on calculte les régles pour chaque villes. à noter que la somme des régles fait 1 (probabilité oblige)
+                for(int i=0; i<size; i++){
+                    if(!visitedCities[i]){
+                        regle[i] = (pow(pheromones[currentCity] [i], infPhero)*pow(1/distances[currentCity][i], infVisi))/somme;
+                    }else{
+                        regle[i]=0;
+                    }
+                }
+                double testsomme = 0;
+                //TEST SOMME REGLES DOIT ETRE == 1
+                for(int i=0; i < size; i++){
+                    testsomme+= regle[i];
+                }
+
+                int nextCity = RWS(regle, remainingCities);
+
+                pheromonesFourmis[currentCity] [nextCity] += infPhero/(distances[currentCity] [nextCity]);
+
+                currentCity = nextCity;
+
+            }else{
+                remainingCities.clear();
+                remainingCities = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28};
+
+                //réinitialisation du tableau des villes visitées
+                for(int i=0; i<size; i++){
+                    visitedCities[i] = false;
+                }
+                //on évapore les phéromones précédentes
+                for(int i=0;i<size;i++){
+                    for(int j=0;j<size; j++){
+                        pheromones [i] [j] *= tEvap;
+                    }
+                }
+                //on ajoute les phéromes de la fourmis au autres phéromones précédement déposées
+                for(int i=0;i<size;i++){
+                    for(int j=0;j<size; j++){
+                        pheromones [i] [j] += pheromonesFourmis[i] [j];
+                    }
+                }                
+            }
+        }
+
+        ///////////////////////
         incr++;
-    //}
+        cout << "Itération n°" << incr << endl;
+    }
     
     
 

@@ -1,5 +1,5 @@
 CC=g++
-FLAGS= -std=c++0x
+FLAGS=-g -std=c++0x
 NAME=fourmis
 
 all : $(NAME)
