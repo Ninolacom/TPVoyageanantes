@@ -70,13 +70,16 @@ int RWS(double* regle, vector<int> remainingCities){
 }
 
 int main() {
-    cout << "hello" << endl;
     int depart=100;
+    int nbFourmis = 0;
     while(depart>28 || depart<0){
-        cout << "Point de depart (0-28)" << endl;
+        cout << "Point de depart (0-28) : ";
         cin >> depart;
     }
-    
+    cout << "Nombre de fourmis ? : ";
+    cin >> nbFourmis;
+    //stock l'itinéraire des fourmis
+    vector<int> pathFourmis;
     //tableau contenant les phéromones
     double pheromones[size] [size];
     //Initualisation du tableau avec des 1;
@@ -96,7 +99,8 @@ int main() {
     int currentCity = depart;
     //liste des villes restantes (car sinon roue biaisé tourne en boucle avec juste le tableau des true/false)
     vector<int> remainingCities = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28};
-    while(incr < 10000){
+
+    while(incr < nbFourmis){
                 
         bool allCitiesVisited = false;
 
@@ -108,9 +112,13 @@ int main() {
             }
         }
 
+        //nettoyage du tableau contenant l'itinéraire de la fourmis
+        pathFourmis.clear();
+
         //tant que toutes les villes ne sont pas visitées on continue avec la fourmis
         while(!allCitiesVisited){
-            
+            pathFourmis.push_back(currentCity);
+
             //on mar que la ville comme visité
             visitedCities[currentCity] = true;
             for(int i=0; i<remainingCities.size(); i++){
@@ -141,11 +149,6 @@ int main() {
                     }else{
                         regle[i]=0;
                     }
-                }
-                double testsomme = 0;
-                //TEST SOMME REGLES DOIT ETRE == 1
-                for(int i=0; i < size; i++){
-                    testsomme+= regle[i];
                 }
 
                 int nextCity = RWS(regle, remainingCities);
@@ -182,38 +185,22 @@ int main() {
         //cout << "Itération n°" << incr << endl;
     }
 
-    /*for(int i=0; i<size; i++){
+    cout << "Itinéraire optimal" << endl;
+    //à la fin de l'algorithme on affiche le chemin parcouru par la dernière fourmis
+    for(int i=0; i<pathFourmis.size(); i++){
+        if(i == pathFourmis.size()-1){
+            cout << pathFourmis.at(i) << endl;
+        }else{
+            cout << pathFourmis.at(i) << " -> ";
+        }
+    }
+    /*
+    for(int i=0; i<size; i++){
         for(int j=0; j<size; j++){
             cout << pheromones[i] [j] << " - ";
         }
         cout << endl;
     }*/
-
-    //reinitialisation du tableau
-    for(int i=0; i<size; i++){
-        visitedCities[i] = false;
-    }
-    //extration des phéromones
-    int path[size];
-    path[0] = depart;
-    visitedCities[depart] = true;
-
-    int currentNode = depart;
-    //on parcour les phéromones et on va là où les phéromones sont les plus fortes
-    for(int i=0; i<size; i++){
-        double maxPheromone = 0;
-        for(int j=0; j<size; j++){
-            if(pheromones[currentNode][j]>maxPheromone && !visitedCities[j]){
-                path[i+1] = j;
-                visitedCities[j] = true;
-            }
-        }
-        currentNode = path[i+1];
-    }
-
-    for(int i=0; i<size; i++){
-        cout << path[i] << " -> ";
-    }
 
     return 0;
 }
